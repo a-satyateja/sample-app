@@ -1,5 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
 import { AppService } from './app.service';
+import { metaData } from '../metadata';
 
 @Controller()
 export class AppController {
@@ -11,8 +12,19 @@ export class AppController {
   }
 
   @Get('/status')
-  getStatus(): string {
+  getStatus() {
     const sha = process.env.SHA;
-    return sha || 'No SHA found in ENV';
+    return {
+      myapplication: [
+        {
+          version: metaData.version,
+
+          description: metaData.description,
+
+          lastcommitsha: sha || 'No SHA found in ENV',
+        },
+      ],
+    };
+    // return sha || 'No SHA found in ENV';
   }
 }
